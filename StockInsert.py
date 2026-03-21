@@ -22,15 +22,16 @@ def ticker_summary(id):
 """
 使用 pymssql 對資料庫進行連接
 """
-server = "mis168db1.database.windows.net"
-database = "free-sql-db-3039299"
+server = "hsiangdb.database.windows.net"
+database = "hsiangDB1"
 user = "chengshiang"
 password = "Tools335~"  
 '''密碼洩漏問題'''
 
 INS_SQL = """
-    INSERT into dbo.TWStockDailyPrice(StockId, OpenPrice, HighPrice, LowPrice, ClosePrice) 
+    INSERT into dbo.StockPrice(StockId,sName, OpenPrice, HighPrice, LowPrice, ClosePrice) 
     VALUES (
+        %s,
         %s,
         %s,
         %s,
@@ -46,7 +47,7 @@ try:
 
 
     info = ticker_summary("2330.TW")
-    cursor.execute(INS_SQL, ("2330", info.open, info.day_high, info.day_low, info.last_price))
+    cursor.execute(INS_SQL, ("2330", "台積電", info.open, info.day_high, info.day_low, info.last_price))
     # pymssql 預設設定 autocommit = false
     connect.commit()
 
